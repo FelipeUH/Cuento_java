@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 public class P5 extends javax.swing.JPanel {
 
     PanelJuego snake;
+    public static int puntuacion;
     
     public P5() {
         initComponents();
@@ -93,8 +94,10 @@ public class P5 extends javax.swing.JPanel {
 
     private void continuarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuarBtnActionPerformed
         if (!snake.perdido) {
+            puntuacion = snake.puntos;
             P6 p6 = new P6();
             Main.mostrarPanel(p6);
+            
         }
     }//GEN-LAST:event_continuarBtnActionPerformed
 

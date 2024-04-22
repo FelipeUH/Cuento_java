@@ -6,14 +6,17 @@ Vista\Swing\P4.class
 Vista\Swing\P2.class
 Control\CalculadoraImpuestos.class
 Vista\Swing\P2$1.class
+Control\Carro.class
 Vista\Swing\P7.class
 Vista\Swing\P5$1.class
 Vista\Swing\P6$1.class
 Vista\Swing\PanelJuego$MyKeyAdapter.class
 Vista\Swing\P3$1.class
+Control\Usuario.class
 Vista\Swing\P4$1.class
 Vista\Swing\Main$2.class
 Vista\Swing\P5.class
+Control\JsonWriter.class
 Vista\Swing\P7$3.class
 Vista\Swing\PanelJuego.class
 Vista\Swing\P9$1.class

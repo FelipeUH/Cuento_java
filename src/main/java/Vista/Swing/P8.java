@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Vista.Swing;
-
+import Control.*;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -11,11 +11,15 @@ import javax.swing.table.DefaultTableModel;
  * @author felip
  */
 public class P8 extends javax.swing.JPanel {
+    
+    String[] seleccion;
 
     private DefaultTableModel model;
     
     public P8(String[] seleccion) {
         initComponents();
+        this.seleccion = seleccion;
+        
         fondo.setSize(1024, 768);
         Main.pintarImagen(fondo, "src/main/java/Vista/Imagenes/carros.png");
         
@@ -28,6 +32,12 @@ public class P8 extends javax.swing.JPanel {
         model.addRow(seleccion);
         
         tabla.setModel(model);
+        tabla.setDefaultEditor(Object.class, null);
+        
+        Usuario jugador = new Usuario(P1.jugador, new Carro(seleccion), P5.puntuacion);
+        JsonWriter escritor = new JsonWriter("Datos/jugadores.json");
+        escritor.insertarObj(jugador);
+        escritor.guardarJson();
         
     }
 

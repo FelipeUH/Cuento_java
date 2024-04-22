@@ -204,6 +204,7 @@ public class Main extends JFrame {
         
     }
     
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog alerta;
     private javax.swing.JButton alertaBtn;

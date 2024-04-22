@@ -13,7 +13,7 @@ import javax.swing.*;
  * @author felip
  */
 public class P1 extends javax.swing.JPanel {
-    public String jugador;
+    public static String jugador;
     private String introduccion;
     
     public P1(String jugador) {
