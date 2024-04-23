@@ -14,10 +14,10 @@ import java.io.*;
 public class JsonWriter {
     private final Gson gson = new Gson();
     private String jsonStr;
-    private String fileJson;
+    private String jsonFile;
     
-    public JsonWriter(String file) {
-        fileJson = file;
+    public JsonWriter(String path) {
+        jsonFile = path;
     }
     
     public void insertarObj(Object obj) {
@@ -25,8 +25,9 @@ public class JsonWriter {
     }
     
     public void guardarJson() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileJson))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(jsonFile))){
             bw.write(jsonStr);
+            bw.newLine();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

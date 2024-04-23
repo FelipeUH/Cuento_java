@@ -17,11 +17,11 @@ import java.util.List;
  * @author felip
  */
 
-public class Datos {
+public class ExcelReader {
     
     private String rutaArchivo;
     
-    public Datos(String ruta) {
+    public ExcelReader(String ruta) {
         this.rutaArchivo = ruta;
     }
     
@@ -30,27 +30,20 @@ public class Datos {
         List<String[]> listaFiltrada = new ArrayList<>();
         
         try {
-            // Cargando el archivo Excel
             FileInputStream inputStream = new FileInputStream(new File(rutaArchivo));
             XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-
-            // Obteniendo la segunda hoja del archivo
+            
             XSSFSheet sheet = workbook.getSheetAt(1);
 
-            // Iterando sobre las filas de la hoja
             for (Row row : sheet) {
-                // Ignorar la primera fila (encabezados)
                 if (row.getRowNum() == 0) continue;
 
                 if (row.getRowNum() % 2 == 0) continue;
                 
-                // Obtener la celda de la columna "Clase"
                 Cell claseCell = row.getCell(2);
 
-                // Verificar si la clase es diferente de "MOTOCICLETA" o "MOTOCARRO"
                 String clase = claseCell.getStringCellValue();
                 if (clase.equals("AUTOMOVIL")) {
-                    // Obtener las celdas de las columnas requerida
                     String fila[] = new String[3];
 
                     fila[0] = row.getCell(1).getStringCellValue(); // Marca
@@ -60,8 +53,6 @@ public class Datos {
                     listaFiltrada.add(fila);
                 }
             }
-
-            // Cerrar el archivo
             workbook.close();
             inputStream.close();
 

@@ -4,7 +4,7 @@
  */
 package Vista.Swing;
 
-import Control.Datos;
+import Control.ExcelReader;
 import java.util.List;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -27,7 +27,7 @@ public class P7 extends javax.swing.JPanel {
         Main.pintarImagen(fondo, "src/main/java/Vista/Imagenes/carros.png");
         Main.pintarImagen(lucas, "src/main/java/Vista/Imagenes/lucas.png");
         
-        Datos archivo = new Datos("src/main/java/Modelo/fasecolda.xls");
+        ExcelReader archivo = new ExcelReader("src/main/java/Modelo/fasecolda.xls");
         List<String[]> listaVehiculos = archivo.obtenerDatos();
         
         model = new DefaultTableModel();

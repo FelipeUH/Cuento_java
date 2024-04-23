@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class P8 extends javax.swing.JPanel {
     
-    String[] seleccion;
+    private String[] seleccion;
 
     private DefaultTableModel model;
     
@@ -99,6 +99,11 @@ public class P8 extends javax.swing.JPanel {
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 270, -1, 70));
 
         facturaBtn.setText("Generar factura");
+        facturaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturaBtnActionPerformed(evt);
+            }
+        });
         add(facturaBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 420, 170, 60));
         add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1024, 768));
     }// </editor-fold>//GEN-END:initComponents
@@ -108,7 +113,15 @@ public class P8 extends javax.swing.JPanel {
         Main.mostrarPanel(p9);
     }//GEN-LAST:event_continuarBtnActionPerformed
 
+    private void facturaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturaBtnActionPerformed
+        generarFactura();
+    }//GEN-LAST:event_facturaBtnActionPerformed
 
+    private void generarFactura() {
+        BillWriter bw = new BillWriter("factura_vehiculo.pdf");
+        bw.generarFactura(new Usuario(P1.jugador, new Carro(seleccion), P5.puntuacion));
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton continuarBtn;
     private javax.swing.JButton facturaBtn;
