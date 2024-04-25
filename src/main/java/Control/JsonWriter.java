@@ -20,11 +20,11 @@ public class JsonWriter {
         jsonFile = path;
     }
     
-    public void insertarObj(Object obj) {
+    public void insertObject(Object obj) {
         jsonStr = gson.toJson(obj);
     }
     
-    public void guardarJson() {
+    public void saveJson() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(jsonFile))){
             bw.write(jsonStr);
             bw.newLine();

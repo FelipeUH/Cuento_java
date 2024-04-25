@@ -9,8 +9,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -19,46 +18,42 @@ import java.util.List;
 
 public class ExcelReader {
     
-    private String rutaArchivo;
+    private final String filePath;
     
-    public ExcelReader(String ruta) {
-        this.rutaArchivo = ruta;
+    public ExcelReader(String path) {
+        this.filePath = path;
     }
     
-    public List<String[]> obtenerDatos() {
+    public List<String[]> processExcelFile() {
+        List<String[]> filteredList = new ArrayList<>();
         
-        List<String[]> listaFiltrada = new ArrayList<>();
-        
-        try {
-            FileInputStream inputStream = new FileInputStream(new File(rutaArchivo));
-            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+        try (FileInputStream inputStream = new FileInputStream(new File(filePath));
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            XSSFWorkbook workbook = new XSSFWorkbook(bufferedInputStream)) {
             
             XSSFSheet sheet = workbook.getSheetAt(1);
+            Iterator<Row> rowIterator = sheet.iterator();
 
-            for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue;
-
-                if (row.getRowNum() % 2 == 0) continue;
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                if (row.getRowNum() == 0 || row.getRowNum() % 2 == 0 || row.getRowNum() % 3 == 0) continue;
                 
-                Cell claseCell = row.getCell(2);
+                Cell cellClass = row.getCell(2);
+                String vehicleClass = cellClass.getStringCellValue();
+                
+                if ("AUTOMOVIL".equals(vehicleClass)) {
+                    String[] filteredRow = new String[3];
 
-                String clase = claseCell.getStringCellValue();
-                if (clase.equals("AUTOMOVIL")) {
-                    String fila[] = new String[3];
-
-                    fila[0] = row.getCell(1).getStringCellValue(); // Marca
-                    fila[1] = row.getCell(5).getStringCellValue(); // Referencia
-                    fila[2] = row.getCell(67).getStringCellValue(); // Precio
+                    filteredRow[0] = row.getCell(1).getStringCellValue(); // Brand
+                    filteredRow[1] = row.getCell(5).getStringCellValue(); // Reference
+                    filteredRow[2] = row.getCell(67).getStringCellValue(); // Price
                     
-                    listaFiltrada.add(fila);
+                    filteredList.add(filteredRow);
                 }
             }
-            workbook.close();
-            inputStream.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return listaFiltrada;
+        return filteredList;
     }
 }

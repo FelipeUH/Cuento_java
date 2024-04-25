@@ -19,24 +19,24 @@ import java.util.Random;
  */
 public class BillWriter {
     
-    private String ruta;
+    private final String path;
     
-    public BillWriter(String ruta){
-        this.ruta = ruta;
+    public BillWriter(String path){
+        this.path = path;
     }
     
-    public void generarFactura(Usuario cliente) {
+    public void generateBill(User customer) {
         
-        Carro vehiculo = cliente.getVehiculo();
-        Paragraph title = crearTitulo();
-        Paragraph header = crearEncabezado();
-        Paragraph userData = crearDatosUsuario(cliente);
-        PdfPTable vehicleTable = crearTablaVehiculo(vehiculo);
-        Paragraph totalSection = crearTotal(vehiculo.getPrecio());
+        Car vehicle = customer.getVehicle();
+        Paragraph title = createTitle();
+        Paragraph header = createHeader();
+        Paragraph userData = createUserdata(customer);
+        PdfPTable vehicleTable = createVehicleTable(vehicle);
+        Paragraph totalSection = createTotal(vehicle.getPrice());
         
         try {
             Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-            PdfWriter.getInstance(document, new FileOutputStream(ruta));
+            PdfWriter.getInstance(document, new FileOutputStream(path));
 
             document.open();
 
@@ -50,75 +50,73 @@ public class BillWriter {
 
             document.add(new Paragraph("Datos del Vehículo:"));
             document.add(vehicleTable);
-            document.add(new Chunk(crearSeparador()));
+            document.add(new Chunk(createSeparator()));
             document.add(Chunk.NEWLINE);
             
             document.add(totalSection);
 
             document.close();
 
-            System.out.println("La factura ha sido generada exitosamente en el archivo: " + ruta);
+            System.out.println("La factura ha sido generada exitosamente en el archivo: " + path);
         } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
         }
     }
     
-    private LineSeparator crearSeparador() {
+    private LineSeparator createSeparator() {
         LineSeparator line = new LineSeparator();
         line.setLineColor(BaseColor.LIGHT_GRAY);
         line.setLineWidth(1f);
         return line;
     }
     
-    private Paragraph crearEncabezado() {
-        String nombreEmpresa = "Concesionario El Minino";
-        String direccionEmpresa = "Pozo Principal, bosque XYZ";
-        String telefonoEmpresa = "123-456-789";
-        String emailEmpresa = "info@elminino.com";
-        String sitioWebEmpresa = "www.concesionarioelminino.com";
-        String nitEmpresa = "NIT: 123456789";
+    private Paragraph createHeader() {
+        String companyName = "Concesionario El Minino";
+        String companyAddress = "Pozo Principal, bosque XYZ";
+        String companyPhone = "123-456-789";
+        String companyEmail = "info@elminino.com";
+        String companyWebsite = "www.concesionarioelminino.com";
+        String companyNit = "NIT: 123456789";
         
         Paragraph header = new Paragraph();
-        header.add(new Paragraph(nombreEmpresa, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK)));
-        header.add(new Paragraph(direccionEmpresa));
-        header.add(new Paragraph(telefonoEmpresa));
-        header.add(new Paragraph(emailEmpresa));
-        header.add(new Paragraph(sitioWebEmpresa));
-        header.add(new Paragraph(nitEmpresa));
-        header.add(new Chunk(crearSeparador()));
+        header.add(new Paragraph(companyName, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK)));
+        header.add(new Paragraph(companyAddress));
+        header.add(new Paragraph(companyPhone));
+        header.add(new Paragraph(companyEmail));
+        header.add(new Paragraph(companyWebsite));
+        header.add(new Paragraph(companyNit));
+        header.add(new Chunk(createSeparator()));
         header.add(Chunk.NEWLINE);
         return header;
     }
     
-    private Paragraph crearDatosUsuario(Usuario cliente) {
-        String nombreCliente = cliente.getNombre();
-        String direccionCliente = "Avenida Principal, Ciudad A";
-        String telefonoCliente = "987-654-321";
-        String emailCliente = nombreCliente.strip() + "@email.com";
-        Carro vehiculo = cliente.getVehiculo();
+    private Paragraph createUserdata(User customer) {
+        String customerName = customer.getName();
+        String customerAddress = "Avenida Principal, Ciudad A";
+        String customerPhone = "987-654-321";
+        String customerEmail = customerName.replace(" ", "_") + "@email.com";
         
         Paragraph userData = new Paragraph();
         userData.add(new Paragraph("Datos del Cliente:"));
-        userData.add(new Paragraph("Nombre: " + nombreCliente));
-        userData.add(new Paragraph("Dirección: " + direccionCliente));
-        userData.add(new Paragraph("Teléfono: " + telefonoCliente));
-        userData.add(new Paragraph("Email: " + emailCliente));
-        userData.add(new Chunk(crearSeparador()));
+        userData.add(new Paragraph("Nombre: " + customerName));
+        userData.add(new Paragraph("Dirección: " + customerAddress));
+        userData.add(new Paragraph("Teléfono: " + customerPhone));
+        userData.add(new Paragraph("Email: " + customerEmail));
+        userData.add(new Chunk(createSeparator()));
         userData.add(Chunk.NEWLINE);
         return userData;
     }
     
-    private PdfPTable crearTablaVehiculo(Carro vehiculo) {
+    private PdfPTable createVehicleTable(Car vehicle) {
         Random r = new Random();
-        String colores[] = {"Rojo", "Azul", "Verde", "Negro", "Blanco", "Gris", "Naranja", "Morado", "Amarillo"};
+        String[] colors = {"Rojo", "Azul", "Verde", "Negro", "Blanco", "Gris", "Naranja", "Morado", "Amarillo"};
         
-        String marcaVehiculo = vehiculo.getMarca();
-        String modeloVehiculo = vehiculo.getReferencia();
-        String colorVehiculo = colores[r.nextInt(9)];
-        String añoFabricacion = "2023";
-        String tipoCombustible = "Gasolina";
-        String numeroMotor = "123456789";
-        double precioVehiculo = vehiculo.getPrecio();
+        String vehicleBrand = vehicle.getBrand();
+        String vehicleModel = vehicle.getReference();
+        String vehicleColor = colors[r.nextInt(9)];
+        String productionYear = "2023";
+        String fuelType = "Gasolina";
+        String engineNumber = "123456789";
         
         PdfPTable vehicleTable = new PdfPTable(2);
         vehicleTable.setWidthPercentage(100);
@@ -126,22 +124,22 @@ public class BillWriter {
         vehicleTable.setSpacingAfter(10f);
             
         vehicleTable.addCell("Marca:");
-        vehicleTable.addCell(marcaVehiculo);
+        vehicleTable.addCell(vehicleBrand);
         vehicleTable.addCell("Modelo:");
-        vehicleTable.addCell(modeloVehiculo);
+        vehicleTable.addCell(vehicleModel);
         vehicleTable.addCell("Color:");
-        vehicleTable.addCell(colorVehiculo);
+        vehicleTable.addCell(vehicleColor);
         vehicleTable.addCell("Año de Fabricación:");
-        vehicleTable.addCell(añoFabricacion);
+        vehicleTable.addCell(productionYear);
         vehicleTable.addCell("Tipo de Combustible:");
-        vehicleTable.addCell(tipoCombustible);
+        vehicleTable.addCell(fuelType);
         vehicleTable.addCell("Número de Motor:");
-        vehicleTable.addCell(numeroMotor);
+        vehicleTable.addCell(engineNumber);
         
         return vehicleTable;
     }
     
-    private Paragraph crearTitulo() {
+    private Paragraph createTitle() {
         Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 24, BaseColor.BLACK);
         Paragraph title = new Paragraph("Factura", titleFont);
         title.setAlignment(Element.ALIGN_LEFT);
@@ -149,15 +147,15 @@ public class BillWriter {
         return title;
     }
     
-    private Paragraph crearTotal(double precio) {
-        double subtotal = precio;
-        double impuestos = CalculadoraImpuestos.calcularIva(subtotal);
-        double total = subtotal + impuestos;
+    private Paragraph createTotal(double price) {
+        double subtotal = price;
+        double taxes = TaxCalculator.calculateIva(subtotal);
+        double total = subtotal + taxes;
         Paragraph totalSection = new Paragraph();
         totalSection.add(new Paragraph("Subtotal: $" + subtotal));
-        totalSection.add(new Paragraph("Impuestos: $" + impuestos));
+        totalSection.add(new Paragraph("Impuestos: $" + taxes));
         totalSection.add(new Paragraph("Total a Pagar: $" + total));
-        totalSection.add(new Chunk(crearSeparador()));
+        totalSection.add(new Chunk(createSeparator()));
         return totalSection;
     }
 }
